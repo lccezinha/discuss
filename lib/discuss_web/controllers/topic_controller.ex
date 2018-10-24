@@ -1,7 +1,11 @@
 defmodule DiscussWeb.TopicController do
   use DiscussWeb, :controller
 
-  def new(conn, _params) do
-    render conn, "new.html"
+  alias Discuss.Topics.Topic
+
+  def new(conn, params) do
+    changeset = Topic.changeset(%Topic{}, params)
+
+    render conn, "new.html", changeset: changeset
   end
 end
