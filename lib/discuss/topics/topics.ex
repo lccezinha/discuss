@@ -8,6 +8,8 @@ defmodule Discuss.Topics do
   alias Discuss.Repo
   alias Discuss.Topics.Topic
 
+  def list_topics, do: Repo.all(Topic)
+
   def create_topic(params \\ %{}) do
     %Topic{}
     |> Topic.changeset(params)
