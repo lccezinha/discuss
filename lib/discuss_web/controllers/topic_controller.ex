@@ -11,9 +11,12 @@ defmodule DiscussWeb.TopicController do
   end
 
   def create(conn, %{"topic" => topic}) do
-    {:ok, _} = Topics.create_topic(topic)
-
-    conn
-    |> redirect(to: topic_path(conn, :new))
+    case Topics.create_topic(topic) do
+      {:ok, _} ->
+        conn
+        |> redirect(to: topic_path(conn, :new))
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
   end
 end
