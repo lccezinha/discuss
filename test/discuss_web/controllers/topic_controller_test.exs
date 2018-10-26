@@ -1,6 +1,12 @@
 defmodule DiscussWeb.TopicControllerTest do
   use DiscussWeb.ConnCase
 
+  alias Discuss.Factory
+
+  def topic_fixture(attrs \\ %{}) do
+    Factory.insert(:topic, attrs)
+  end
+
   @valid_params %{title: "My Title"}
   @invalid_params %{title: ""}
 
@@ -26,10 +32,14 @@ defmodule DiscussWeb.TopicControllerTest do
   test "POST /topics with invalid data must redirect ", %{conn: conn} do
     conn = post(conn, topic_path(conn, :create), topic: @invalid_params)
 
-    assert html_response(conn, 200) =~ "New User"
+    assert html_response(conn, 200) =~ "New Topic"
   end
 
-  # test "GET /topics/ID/edit with valid id must show the edit form", %{conn: conn} do
-  #   conn = get(conn, topic_path(conn, :create, ))
-  # end
+  test "GET /topics/ID/edit with valid id must show the edit form", %{conn: conn} do
+    topic = topic_fixture()
+
+    conn = get(conn, topic_path(conn, :edit, topic.id))
+
+    assert html_response(conn, 200) =~ "Edit Topic"
+  end
 end

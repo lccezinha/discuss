@@ -3,7 +3,6 @@ defmodule Discuss.TopicsTest do
 
   alias Discuss.Factory
   alias Discuss.Topics
-  alias Discuss.Topics.Topic
 
   def topic_fixture(attrs \\ %{}) do
     Factory.insert(:topic, attrs)
@@ -43,5 +42,14 @@ defmodule Discuss.TopicsTest do
 
     refute result.valid?
     assert "can't be blank" in errors_on(result).title
+  end
+
+  test "get_topic/1 with valid data must return a topic" do
+    topic_one = topic_fixture()
+
+    record = Topics.get_topic!(topic_one.id)
+
+    assert record.id == topic_one.id
+    assert record.title == topic_one.title
   end
 end
