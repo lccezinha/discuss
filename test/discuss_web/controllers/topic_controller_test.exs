@@ -28,4 +28,8 @@ defmodule DiscussWeb.TopicControllerTest do
 
     assert html_response(conn, 200) =~ "New User"
   end
+
+  # test "GET /topics/ID/edit with valid id must show the edit form", %{conn: conn} do
+  #   conn = get(conn, topic_path(conn, :create, ))
+  # end
 end

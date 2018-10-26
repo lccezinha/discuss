@@ -1,14 +1,12 @@
 defmodule Discuss.TopicsTest do
   use Discuss.DataCase
 
-  alias Discuss.Repo
+  alias Discuss.Factory
   alias Discuss.Topics
   alias Discuss.Topics.Topic
 
-  def topic_fixture(attrs \\ %{title: "My Title"}) do
-    changeset = Topic.changeset(%Topic{}, attrs)
-
-    Repo.insert(changeset)
+  def topic_fixture(attrs \\ %{}) do
+    Factory.insert(:topic, attrs)
   end
 
   test "list_topics/1 with empty data" do
@@ -18,8 +16,8 @@ defmodule Discuss.TopicsTest do
   end
 
   test "list_topics/1 with filled array data" do
-    {_, topic_one} = topic_fixture()
-    {_, topic_two} = topic_fixture(%{title: "Second title"})
+    topic_one = topic_fixture()
+    topic_two = topic_fixture(%{title: "Second title"})
 
     topics = Topics.list_topics()
 
