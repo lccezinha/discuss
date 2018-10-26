@@ -17,4 +17,10 @@ defmodule Discuss.Topics do
     |> Topic.changeset(params)
     |> Repo.insert()
   end
+
+  def update_topic(topic, params) do
+    topic
+    |> Topic.changeset(params)
+    |> Repo.update()
+  end
 end

@@ -38,7 +38,25 @@ defmodule DiscussWeb.TopicControllerTest do
   test "GET /topics/ID/edit with valid id must show the edit form", %{conn: conn} do
     topic = topic_fixture()
 
-    conn = get(conn, topic_path(conn, :edit, topic.id))
+    conn = get(conn, topic_path(conn, :edit, topic))
+
+    assert html_response(conn, 200) =~ "Edit Topic"
+  end
+
+  test "PUT /topics/ID with valid data must update the topic data and redirect to index", %{conn: conn} do
+    topic = topic_fixture()
+    params = %{title: "Other title"}
+
+    conn = put(conn, topic_path(conn, :update, topic), topic: params)
+
+    assert get_flash(conn, :info) == "Topic edited!"
+    assert redirected_to(conn) == topic_path(conn, :index)
+  end
+
+  test "PUT /topics/ID with invalid data must not update topic and stay in form", %{conn: conn} do
+    topic = topic_fixture()
+
+    conn = put(conn, topic_path(conn, :update, topic), topic: @invalid_params)
 
     assert html_response(conn, 200) =~ "Edit Topic"
   end

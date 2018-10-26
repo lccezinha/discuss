@@ -52,4 +52,20 @@ defmodule Discuss.TopicsTest do
     assert record.id == topic_one.id
     assert record.title == topic_one.title
   end
+
+  test "update_post/2 with valid data must updates the topic" do
+    topic = topic_fixture()
+    valid_params = %{title: "Other title"}
+
+    assert {:ok, topic} = Topics.update_topic(topic, valid_params)
+    assert topic.title == "Other title"
+  end
+
+  test "update_post/2 with invalid data must updates the topic" do
+    topic = topic_fixture()
+    invalid_params = %{title: ""}
+
+    assert {:error, %Ecto.Changeset{}} = Topics.update_topic(topic, invalid_params)
+    assert topic == Topics.get_topic!(topic.id)
+  end
 end
