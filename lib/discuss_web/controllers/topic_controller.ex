@@ -20,6 +20,7 @@ defmodule DiscussWeb.TopicController do
     case Topics.create_topic(topic) do
       {:ok, _} ->
         conn
+        |> put_flash(:info, "Topic created!")
         |> redirect(to: topic_path(conn, :index))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
