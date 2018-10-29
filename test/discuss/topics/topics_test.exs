@@ -3,6 +3,7 @@ defmodule Discuss.TopicsTest do
 
   alias Discuss.Factory
   alias Discuss.Topics
+  alias Discuss.Topics.Topic
 
   def topic_fixture(attrs \\ %{}) do
     Factory.insert(:topic, attrs)
@@ -67,5 +68,13 @@ defmodule Discuss.TopicsTest do
 
     assert {:error, %Ecto.Changeset{}} = Topics.update_topic(topic, invalid_params)
     assert topic == Topics.get_topic!(topic.id)
+  end
+
+  test "delete_topic/1 with valid data must delete the topic" do
+    topic = topic_fixture()
+
+    assert {:ok, %Topic{}} = Topics.delete_topic(topic)
+    # assert_raise Ecto.NoResultsError, fn -> Topics.get_topic!(topic.id) end
+    assert Topics.list_topics() == []
   end
 end

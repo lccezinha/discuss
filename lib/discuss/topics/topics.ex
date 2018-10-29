@@ -23,4 +23,8 @@ defmodule Discuss.Topics do
     |> Topic.changeset(params)
     |> Repo.update()
   end
+
+  def delete_topic(%Topic{} = topic) do
+    Repo.delete(topic)
+  end
 end

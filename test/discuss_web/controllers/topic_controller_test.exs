@@ -60,4 +60,14 @@ defmodule DiscussWeb.TopicControllerTest do
 
     assert html_response(conn, 200) =~ "Edit Topic"
   end
+
+  test "DELETE /topics/ID with valid data must delete topic", %{conn: conn} do
+    topic_fixture()
+    topic = topic_fixture()
+
+    conn = delete(conn, topic_path(conn, :delete, topic))
+
+    assert get_flash(conn, :info) == "Topic deleted!"
+    assert redirected_to(conn) == topic_path(conn, :index)
+  end
 end
