@@ -16,7 +16,7 @@ defmodule Discuss.TopicsTest do
 
   test "list_topics/1 with filled array data" do
     topic_one = topic_fixture()
-    topic_two = topic_fixture(%{title: "Second title"})
+    topic_two = topic_fixture()
 
     topics = Topics.list_topics()
 
@@ -61,7 +61,7 @@ defmodule Discuss.TopicsTest do
     assert topic.title == "Other title"
   end
 
-  test "update_post/2 with invalid data must updates the topic" do
+  test "update_post/2 with invalid data must not updates the topic" do
     topic = topic_fixture()
     invalid_params = %{title: ""}
 
