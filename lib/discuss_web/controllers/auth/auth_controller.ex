@@ -8,5 +8,8 @@ defmodule DiscussWeb.Auth.AuthController do
     IO.inspect("\n @@@@ ")
     IO.inspect(params)
     IO.inspect("\n @@@@ ")
+
+    conn
+    |> resp(200, "{}")
   end
 end
