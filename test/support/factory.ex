@@ -2,7 +2,7 @@ defmodule Discuss.Factory do
   use ExMachina.Ecto, repo: Discuss.Repo
 
   alias Discuss.Topics.Topic
-  alias Discuss.Topics.User
+  alias Discuss.Users.User
 
   def topic_factory do
     %Topic{title: "My title"}

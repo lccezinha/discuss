@@ -1,8 +1,8 @@
-defmodule Discuss.Topics.UserTest do
+defmodule Discuss.Users.UserTest do
   use Discuss.DataCase
 
   alias Discuss.Factory
-  alias Discuss.Topics.User
+  alias Discuss.Users.User
 
   def user_fixture(attrs \\ %{}) do
     Factory.build(:user, attrs)
