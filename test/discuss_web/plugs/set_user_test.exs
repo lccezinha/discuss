@@ -9,7 +9,7 @@ defmodule DiscussWeb.Plugs.SetUserTest do
   end
 
   test "init/1 must return params" do
-    assert %{} == SetUser.init(%{})
+    assert nil == SetUser.init(%{})
   end
 
   test "call/2 with user in sessions must assigns user to conn assings struct", %{conn: conn} do
@@ -20,7 +20,7 @@ defmodule DiscussWeb.Plugs.SetUserTest do
       |> Plug.Test.init_test_session(user_id: user_data.id)
 
     assert %{assigns: %{user: user}} = SetUser.call(conn, %{})
-    
+
     assert user.id == user_data.id
   end
 
@@ -30,7 +30,7 @@ defmodule DiscussWeb.Plugs.SetUserTest do
       |> Plug.Test.init_test_session(user_id: nil)
 
     assert %{assigns: %{user: user}} = SetUser.call(conn, %{})
-    
+
     assert user == nil
   end
 end
