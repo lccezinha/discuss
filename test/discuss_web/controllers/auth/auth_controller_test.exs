@@ -3,6 +3,7 @@ defmodule DiscussWeb.Auth.AuthControllerTest do
 
   alias Discuss.Repo
   alias Discuss.Users.User
+  alias Discuss.Factory
 
   @ueberauth_auth %{
     credentials: %{
@@ -19,14 +20,18 @@ defmodule DiscussWeb.Auth.AuthControllerTest do
       token: "",
     },
     info: %{
-      email: "xunda@example.org", 
+      email: "xunda@example.org",
       name: "xunda",
     }
   }
 
+  def user_factory do
+    Factory.insert(:user)
+  end
+
   test "redirects user to github auth", %{conn: conn} do
     conn = get(conn, auth_path(conn, :request, "github"))
-    
+
     assert redirected_to(conn, 302)
   end
 
@@ -34,7 +39,7 @@ defmodule DiscussWeb.Auth.AuthControllerTest do
     conn =
       conn
       |> assign(:ueberauth_auth, @ueberauth_auth)
-      |> get("/auth/github/callback")
+      |> get(auth_path(conn, :callback, "github"))
 
     users = Repo.all(User)
     assert Enum.count(users) == 1
@@ -47,7 +52,7 @@ defmodule DiscussWeb.Auth.AuthControllerTest do
     conn =
       conn
       |> assign(:ueberauth_auth, @invalid_ueberauth_auth)
-      |> get("/auth/github/callback")
+      |> get(auth_path(conn, :callback, "github"))
 
     users = Repo.all(User)
     assert Enum.count(users) == 0
@@ -55,5 +60,18 @@ defmodule DiscussWeb.Auth.AuthControllerTest do
     assert get_flash(conn, :error) == "Some shit happen, login failed!"
     assert redirected_to(conn) == topic_path(conn, :index)
   end
-end
 
+  test "GET /signout must remove user from session", %{conn: conn} do
+    user = user_factory()
+
+    conn = assign(conn, :user, user)
+
+    conn =
+      conn
+      |> get(auth_path(conn, :signout))
+
+    assert conn.assigns[:user] == nil
+    assert get_flash(conn, :info) == "Successful sign out!"
+    assert redirected_to(conn) == topic_path(conn, :index)
+  end
+end

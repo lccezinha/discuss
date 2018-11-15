@@ -8,6 +8,13 @@ defmodule DiscussWeb.Auth.AuthController do
     signin(conn, auth)
   end
 
+  def signout(conn, _params) do
+    conn
+    |> configure_session(drop: true)
+    |> put_flash(:info, "Successful sign out!")
+    |> redirect(to: topic_path(conn, :index))
+  end
+
   defp signin(conn, auth) do
     params = %{
       email: auth.info.email,
