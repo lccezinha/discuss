@@ -7,8 +7,22 @@ defmodule DiscussWeb.TopicControllerTest do
     Factory.insert(:topic, attrs)
   end
 
+  def user_fixture do
+    Factory.insert(:user)
+  end
+
   @valid_params %{title: "My Title"}
   @invalid_params %{title: ""}
+
+  setup %{conn: conn} do
+    user_data = user_fixture()
+
+    conn =
+      conn
+      |> Plug.Test.init_test_session(user_id: user_data.id)
+
+      {:ok, conn: conn}
+  end
 
   test "GET /topics or /", %{conn: conn} do
     conn = get(conn, topic_path(conn, :index))
