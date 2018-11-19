@@ -3,7 +3,7 @@ defmodule DiscussWeb.Plugs.SetUser do
     Plug to set user_id on conn session
   """
 
-  use Phoenix.Controller, namespace: DiscussWeb
+  use Phoenix.Controller
   import Plug.Conn
 
   alias Discuss.Repo
