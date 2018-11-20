@@ -5,7 +5,12 @@ defmodule Discuss.Factory do
   alias Discuss.Users.User
 
   def topic_factory do
-    %Topic{title: "My title"}
+    user = build(:user)
+
+    %Topic{
+      title: "My title",
+      user: user
+    }
   end
 
     def user_factory do

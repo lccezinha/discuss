@@ -5,8 +5,12 @@ defmodule Discuss.TopicsTest do
   alias Discuss.Topics
   alias Discuss.Topics.Topic
 
-  def topic_fixture(attrs \\ %{}) do
+  def topic_factory(attrs \\ %{}) do
     Factory.insert(:topic, attrs)
+  end
+
+  def user_factory do
+    Factory.insert(:user)
   end
 
   test "list_topics/1 with empty data" do
@@ -16,8 +20,8 @@ defmodule Discuss.TopicsTest do
   end
 
   test "list_topics/1 with filled array data" do
-    topic_one = topic_fixture()
-    topic_two = topic_fixture()
+    topic_one = topic_factory()
+    topic_two = topic_factory()
 
     topics = Topics.list_topics()
 
@@ -29,11 +33,13 @@ defmodule Discuss.TopicsTest do
   end
 
   test "create_topic/1 with valid data must create a new topic" do
-    params = %{title: "Title"}
+    user = user_factory()
+    params = %{title: "Title", user_id: user.id}
 
     {:ok, topic} = Topics.create_topic(params)
 
     assert topic.title == params.title
+    assert topic.user_id == params.user_id
   end
 
   test "create_topic/1 with invalid data must raise error" do
@@ -46,7 +52,7 @@ defmodule Discuss.TopicsTest do
   end
 
   test "get_topic/1 with valid data must return a topic" do
-    topic_one = topic_fixture()
+    topic_one = topic_factory()
 
     record = Topics.get_topic!(topic_one.id)
 
@@ -55,26 +61,32 @@ defmodule Discuss.TopicsTest do
   end
 
   test "update_post/2 with valid data must updates the topic" do
-    topic = topic_fixture()
+    topic = topic_factory()
+    user_id = topic.user_id
     valid_params = %{title: "Other title"}
 
     assert {:ok, topic} = Topics.update_topic(topic, valid_params)
     assert topic.title == "Other title"
+    assert topic.user_id == user_id
   end
 
   test "update_post/2 with invalid data must not updates the topic" do
-    topic = topic_fixture()
+    topic = topic_factory()
     invalid_params = %{title: ""}
 
     assert {:error, %Ecto.Changeset{}} = Topics.update_topic(topic, invalid_params)
-    assert topic == Topics.get_topic!(topic.id)
+
+    result = Topics.get_topic!(topic.id)
+
+    assert topic.id == result.id
+    assert topic.title == result.title
+    assert topic.user_id == result.user_id
   end
 
   test "delete_topic/1 with valid data must delete the topic" do
-    topic = topic_fixture()
+    topic = topic_factory()
 
     assert {:ok, %Topic{}} = Topics.delete_topic(topic)
-    # assert_raise Ecto.NoResultsError, fn -> Topics.get_topic!(topic.id) end
     assert Topics.list_topics() == []
   end
 end

@@ -18,8 +18,12 @@ defmodule DiscussWeb.TopicController do
     render conn, "new.html", changeset: changeset
   end
 
-  def create(conn, %{"topic" => topic}) do
-    case Topics.create_topic(topic) do
+  def create(conn, %{"topic" => topic_params}) do
+    topic_params =
+      topic_params
+      |> Map.merge(%{"user_id" => conn.assigns.user.id})
+
+    case Topics.create_topic(topic_params) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Topic created!")
@@ -37,10 +41,14 @@ defmodule DiscussWeb.TopicController do
     render conn, "edit.html", changeset: changeset, topic: topic
   end
 
-  def update(conn, %{"id" => id, "topic" => params}) do
+  def update(conn, %{"id" => id, "topic" => topic_params}) do
     topic = Topics.get_topic!(id)
 
-    case Topics.update_topic(topic, params) do
+    topic_params =
+      topic_params
+      |> Map.merge(%{"user_id" => conn.assigns.user.id})
+
+    case Topics.update_topic(topic, topic_params) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Topic edited!")

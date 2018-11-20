@@ -20,6 +20,7 @@ defmodule DiscussWeb.TopicControllerTest do
     conn =
       conn
       |> Plug.Test.init_test_session(user_id: user_data.id)
+      |> DiscussWeb.Plugs.SetUser.call(%{})
 
     {:ok, conn: conn}
   end
