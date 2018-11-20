@@ -7,8 +7,6 @@ defmodule DiscussWeb.Plugs.RequireAuth do
   def init(_params) do
   end
 
-  @spec call(atom() | %{assigns: nil | keyword() | map()}, any()) ::
-          atom() | %{assigns: nil | keyword() | map()}
   def call(conn, _params) do
     if conn.assigns[:user] do
       conn

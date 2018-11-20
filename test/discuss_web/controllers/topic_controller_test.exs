@@ -21,7 +21,7 @@ defmodule DiscussWeb.TopicControllerTest do
       conn
       |> Plug.Test.init_test_session(user_id: user_data.id)
 
-      {:ok, conn: conn}
+    {:ok, conn: conn}
   end
 
   test "GET /topics or /", %{conn: conn} do
