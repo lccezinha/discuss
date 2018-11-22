@@ -19,6 +19,12 @@ defmodule DiscussWeb.TopicController do
     render conn, "new.html", changeset: changeset
   end
 
+  def show(conn, %{"id" => id}) do
+    topic = Topics.get_topic!(id)
+
+    render conn, "show.html", topic: topic
+  end
+
   def create(conn, %{"topic" => topic_params}) do
     topic_params =
       topic_params
