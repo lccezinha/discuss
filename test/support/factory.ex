@@ -13,7 +13,7 @@ defmodule Discuss.Factory do
     }
   end
 
-    def user_factory do
+  def user_factory do
     %User{
       email: "dev@example.org",
       name: "Developer",
