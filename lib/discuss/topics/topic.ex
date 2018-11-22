@@ -1,10 +1,11 @@
 defmodule Discuss.Topics.Topic do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Discuss.Topics.Topic
+  alias Discuss.Topics.{Topic, Comment}
 
   schema "topics" do
     field :title, :string
+    has_many :comments, Comment
     
     belongs_to :user, Discuss.Users.User
   end

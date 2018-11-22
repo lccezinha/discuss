@@ -1,7 +1,7 @@
 defmodule Discuss.Topics.Comment do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Discuss.Topics.{Comment, Topic}
+  alias Discuss.Topics.Topic
 
   schema "comments" do
     field :content, :string
@@ -11,8 +11,8 @@ defmodule Discuss.Topics.Comment do
   end
 
   @doc false
-  def changeset(%Comment{} = comment, attrs \\ %{}) do
-    comment
+  def changeset(struct, attrs \\ %{}) do
+    struct
     |> cast(attrs, [:content, :user_id, :topic_id])
     |> validate_required([:content])
   end
