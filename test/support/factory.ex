@@ -1,7 +1,7 @@
 defmodule Discuss.Factory do
   use ExMachina.Ecto, repo: Discuss.Repo
 
-  alias Discuss.Topics.Topic
+  alias Discuss.Topics.{Topic, Comment}
   alias Discuss.Users.User
 
   def topic_factory do
@@ -18,6 +18,17 @@ defmodule Discuss.Factory do
       email: "dev@example.org",
       name: "Developer",
       token: "some-token-123"
+    }
+  end
+
+  def comment_factory do
+    user = build(:user)
+    topic = build(:topic)
+
+    %Comment{
+      content: "My content",
+      user: user,
+      topic: topic
     }
   end
 end
