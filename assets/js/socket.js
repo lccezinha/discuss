@@ -59,10 +59,4 @@ channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
-const clickButton = function() {
-  channel.push('comment:hello', {hi: 'there!'});
-};
-
-document.querySelector('button').addEventListener('click',  clickButton);
-
 export default socket
