@@ -1,4 +1,4 @@
-defmodule Discuss.CommentsChannel do
+defmodule DiscussWeb.CommentsChannel do
   use DiscussWeb, :channel
 
   alias Discuss.Topics
