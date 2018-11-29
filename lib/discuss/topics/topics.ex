@@ -34,4 +34,9 @@ defmodule Discuss.Topics do
     |> Comment.changeset(%{content: content})
     |> Repo.insert()
   end
+
+  def list_comments_preload(topic_id) do
+    Repo.get!(Topic, topic_id)
+    |> Repo.preload(:comments)
+  end
 end
