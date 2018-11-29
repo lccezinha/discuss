@@ -8,6 +8,8 @@ defmodule Discuss.Topics.Comment do
     
     belongs_to :user, Discuss.Users.User
     belongs_to :topic, Topic
+
+    timestamps()
   end
 
   @doc false

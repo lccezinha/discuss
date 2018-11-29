@@ -6,7 +6,7 @@ defmodule Discuss.Topics do
   import Ecto.Query, warn: false
 
   alias Discuss.Repo
-  alias Discuss.Topics.Topic
+  alias Discuss.Topics.{Topic, Comment}
 
   def get_topic!(id), do: Repo.get!(Topic, id)
 
@@ -27,4 +27,22 @@ defmodule Discuss.Topics do
   def delete_topic(%Topic{} = topic) do
     Repo.delete(topic)
   end
+
+  def create_comment(topic, content) do
+    topic
+    |> Ecto.build_assoc(:comments, user_id: topic.user_id)
+    |> Comment.changeset(%{content: content})
+    |> Repo.insert()
+  end
+
+  # def insert_or_find(params \\ %{}) do
+  #   case User |> where(email: ^params.email) |> Repo.one() do
+  #     nil ->
+  #       %User{}
+  #       |> User.changeset(params)
+  #       |> Repo.insert()
+  #     user ->
+  #       {:ok, user}
+  #   end
+  # end
 end

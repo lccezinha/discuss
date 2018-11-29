@@ -1,7 +1,10 @@
 defmodule Discuss.TopicsTest do
   use Discuss.DataCase
 
+  import Ecto.Query
+
   alias Discuss.Factory
+  alias Discuss.Repo
   alias Discuss.Topics
   alias Discuss.Topics.Topic
 
@@ -88,5 +91,16 @@ defmodule Discuss.TopicsTest do
 
     assert {:ok, %Topic{}} = Topics.delete_topic(topic)
     assert Topics.list_topics() == []
+  end
+
+  test "create_comment/1 with valid data must create a comment related with topic" do
+    assert Repo.one(from c in "comments", select: count(c.id)) == 0
+
+    topic = topic_factory()
+    Topics.create_comment(topic, "some comment")
+    topic = Topics.get_topic!(topic.id) |> Repo.preload(:comments)
+
+    assert Repo.one(from c in "comments", select: count(c.id)) == 1
+    assert Enum.at(topic.comments, 0).topic_id == topic.id
   end
 end

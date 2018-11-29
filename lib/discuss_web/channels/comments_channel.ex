@@ -6,12 +6,18 @@ defmodule DiscussWeb.CommentsChannel do
   def join("comments:" <> topic_id, _auth_msg, socket) do
     topic_id = String.to_integer(topic_id)
     topic = Topics.get_topic!(topic_id)
-    IO.inspect(topic)
-    {:ok, %{}, socket}
+    
+    {:ok, %{}, assign(socket, :topic, topic)}
   end
 
-  def handle_in(name, %{"content" => content}, socket) do
-    IO.inspect(content)
-    {:reply, :ok, socket}
+  def handle_in(event, %{"content" => content}, socket) do
+    topic = socket.assigns.topic
+
+    case Topics.create_comment(topic, content) do
+      {:ok, comment} ->
+        {:reply, :ok, socket}
+      {:error, reason} ->
+        {:reply, {:error, %{errors: reason}}, socket}
+    end
   end
 end
