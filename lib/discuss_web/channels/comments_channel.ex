@@ -10,11 +10,11 @@ defmodule DiscussWeb.CommentsChannel do
     {:ok, %{}, assign(socket, :topic, topic)}
   end
 
-  def handle_in(event, %{"content" => content}, socket) do
+  def handle_in(_event, %{"content" => content}, socket) do
     topic = socket.assigns.topic
 
     case Topics.create_comment(topic, content) do
-      {:ok, comment} ->
+      {:ok, _comment} ->
         {:reply, :ok, socket}
       {:error, reason} ->
         {:reply, {:error, %{errors: reason}}, socket}
