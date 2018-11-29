@@ -104,10 +104,10 @@ defmodule Discuss.TopicsTest do
     assert Enum.at(topic.comments, 0).topic_id == topic.id
   end
 
-  test "list_comments_preload/1" do
+  test "get_topic_with_comments_preload/1" do
     topic_data = topic_factory()
     Topics.create_comment(topic_data, "some comment")
-    topic = Topics.list_comments_preload(topic_data.id)
+    topic = Topics.get_topic_with_comments_preload(topic_data.id)
 
     assert length(topic.comments) == 1
     assert Enum.at(topic.comments, 0).content == "some comment"
