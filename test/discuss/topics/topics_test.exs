@@ -104,6 +104,15 @@ defmodule Discuss.TopicsTest do
     assert Enum.at(topic.comments, 0).topic_id == topic.id
   end
 
+  test "create_comment/1 with invalid data must not create a comment and return error" do
+    {:error, result} = 
+      topic_factory()
+      |> Topics.create_comment("")
+
+    refute result.valid?
+    assert "can't be blank" in errors_on(result).content
+  end
+
   test "get_topic_with_comments_preload/1" do
     topic_data = topic_factory()
     Topics.create_comment(topic_data, "some comment")
