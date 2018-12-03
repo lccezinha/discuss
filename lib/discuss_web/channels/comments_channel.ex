@@ -6,10 +6,10 @@ defmodule DiscussWeb.CommentsChannel do
   def join("comments:" <> topic_id, _auth_msg, socket) do
     topic_id = String.to_integer(topic_id)
     topic = Topics.get_topic_with_comments_preload(topic_id)
-    
+
     {
       :ok,
-      %{comments: topic.comments}, 
+      %{comments: topic.comments},
       assign(socket, :topic, topic)
     }
   end
