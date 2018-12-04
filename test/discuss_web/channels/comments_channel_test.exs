@@ -3,6 +3,7 @@ defmodule DiscussWeb.CommentsChannelTest do
 
   alias Discuss.Factory
   alias Discuss.Repo
+  alias Discuss.Topics.Comment
 
   def topic_factory do
     Factory.insert(:topic)
@@ -35,10 +36,11 @@ defmodule DiscussWeb.CommentsChannelTest do
       topic = topic_factory()
       {:ok, _payload, socket} = subscribe_and_join(socket, "comments:#{topic.id}", %{})
 
-      # ref = push(socket, "comments:add", %{"content" => "my content"})
-      # assert_reply ref, :ok, %{}
-      # push(socket, "comments:#{topic.id}:new", %{"content" => "my content"})
-      # assert_broadcast("comments:#{topic.id}:new", %{"content" => "my content"})
+      # push(socket, "comments:add", %{"content" => "my content"})
+      
+      # broadcast_event = "comments:#{topic.id}:new"
+      # broadcast_payload = %{"content" => %Comment{}}  
+      # assert_broadcast(broadcast_event, broadcast_payload)
     end
 
     test "receive an invalid content and create new comment", %{socket: socket} do
