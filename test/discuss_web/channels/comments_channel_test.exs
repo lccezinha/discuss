@@ -36,11 +36,12 @@ defmodule DiscussWeb.CommentsChannelTest do
       topic = topic_factory()
       {:ok, _payload, socket} = subscribe_and_join(socket, "comments:#{topic.id}", %{})
 
-      # push(socket, "comments:add", %{"content" => "my content"})
+      push(socket, "comments:add", %{"content" => "my content"})
       
-      # broadcast_event = "comments:#{topic.id}:new"
-      # broadcast_payload = %{"content" => %Comment{}}  
-      # assert_broadcast(broadcast_event, broadcast_payload)
+      broadcast_event = "comments:#{topic.id}:new"
+      broadcast_payload = %{comment: get_last_comment()}
+
+      assert_broadcast(^broadcast_event, ^broadcast_payload)
     end
 
     test "receive an invalid content and create new comment", %{socket: socket} do
@@ -49,6 +50,12 @@ defmodule DiscussWeb.CommentsChannelTest do
 
       ref = push(socket, "comments:add", %{"content" => ""})
       assert_reply ref, :error, %{errors: reason}
+    end
+
+    defp get_last_comment do
+      import Ecto.Query
+
+      Discuss.Repo.one(from c in Comment, order_by: [desc: c.id], limit: 1)
     end
   end
 end
