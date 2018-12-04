@@ -1,7 +1,7 @@
 <h5><%= @topic.title %></h5>
 
 <div class="input-field">
-  <textarea class="materialize-textarea"></textarea>
+  <textarea class="materialize-textarea add-comment"></textarea>
   <button class="btn">Add comment</button>
   <ul class="collection list-topic-comments"></ul>
 </div>

@@ -18,7 +18,8 @@ defmodule DiscussWeb.CommentsChannel do
     topic = socket.assigns.topic
 
     case Topics.create_comment(topic, content) do
-      {:ok, _comment} ->
+      {:ok, comment} ->
+        broadcast!(socket, "comments:#{socket.assigns.topic.id}:new", %{comment: comment})
         {:reply, :ok, socket}
       {:error, reason} ->
         {:reply, {:error, %{errors: reason}}, socket}
