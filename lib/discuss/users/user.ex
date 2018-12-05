@@ -4,13 +4,15 @@ defmodule Discuss.Users.User do
 
   alias Discuss.Topics.{Topic, Comment}
 
-  schema "users" do
-    field :email, :string
-    field :name, :string
-    field :token, :string
+  @derive {Poison.Encoder, only: [:name]}
 
-    has_many :topics, Topic
-    has_many :comments, Comment
+  schema "users" do
+    field(:email, :string)
+    field(:name, :string)
+    field(:token, :string)
+
+    has_many(:topics, Topic)
+    has_many(:comments, Comment)
 
     timestamps()
   end

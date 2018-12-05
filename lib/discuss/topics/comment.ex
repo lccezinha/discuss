@@ -3,13 +3,13 @@ defmodule Discuss.Topics.Comment do
   import Ecto.Changeset
   alias Discuss.Topics.Topic
 
-  @derive {Poison.Encoder, only: [:content]}
+  @derive {Poison.Encoder, only: [:content, :user]}
 
   schema "comments" do
-    field :content, :string
-    
-    belongs_to :user, Discuss.Users.User
-    belongs_to :topic, Topic
+    field(:content, :string)
+
+    belongs_to(:user, Discuss.Users.User)
+    belongs_to(:topic, Topic)
 
     timestamps()
   end

@@ -12,7 +12,7 @@ defmodule Discuss.Topics do
 
   def get_topic_with_comments_preload(topic_id) do
     Repo.get!(Topic, topic_id)
-    |> Repo.preload(:comments)
+    |> Repo.preload(comments: :user)
   end
 
   def list_topics, do: Repo.all(Topic)
@@ -33,9 +33,9 @@ defmodule Discuss.Topics do
     Repo.delete(topic)
   end
 
-  def create_comment(topic, content) do
+  def create_comment(topic, user_id, content) do
     topic
-    |> Ecto.build_assoc(:comments, user_id: topic.user_id)
+    |> Ecto.build_assoc(:comments, user_id: user_id)
     |> Comment.changeset(%{content: content})
     |> Repo.insert()
   end

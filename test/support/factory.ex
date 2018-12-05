@@ -22,11 +22,9 @@ defmodule Discuss.Factory do
   end
 
   def comment_factory do
-    user = build(:user)
-
     %Comment{
       content: "My content",
-      user: user,
+      user: nil,
       topic: nil
     }
   end

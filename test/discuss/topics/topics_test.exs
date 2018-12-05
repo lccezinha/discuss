@@ -28,7 +28,7 @@ defmodule Discuss.TopicsTest do
 
     topics = Topics.list_topics()
 
-    ids = Enum.map(topics, fn(topic) -> topic.id end)
+    ids = Enum.map(topics, fn topic -> topic.id end)
 
     refute topics == []
     assert topic_one.id in ids
@@ -94,20 +94,22 @@ defmodule Discuss.TopicsTest do
   end
 
   test "create_comment/1 with valid data must create a comment related with topic" do
-    assert Repo.one(from c in "comments", select: count(c.id)) == 0
+    assert Repo.one(from(c in "comments", select: count(c.id))) == 0
 
     topic = topic_factory()
-    Topics.create_comment(topic, "some comment")
+    user = user_factory()
+    Topics.create_comment(topic, user.id, "some comment")
     topic = Topics.get_topic!(topic.id) |> Repo.preload(:comments)
 
-    assert Repo.one(from c in "comments", select: count(c.id)) == 1
+    assert Repo.one(from(c in "comments", select: count(c.id))) == 1
     assert Enum.at(topic.comments, 0).topic_id == topic.id
+    assert Enum.at(topic.comments, 0).user_id == user.id
   end
 
   test "create_comment/1 with invalid data must not create a comment and return error" do
-    {:error, result} = 
+    {:error, result} =
       topic_factory()
-      |> Topics.create_comment("")
+      |> Topics.create_comment(1, "")
 
     refute result.valid?
     assert "can't be blank" in errors_on(result).content
@@ -115,7 +117,8 @@ defmodule Discuss.TopicsTest do
 
   test "get_topic_with_comments_preload/1" do
     topic_data = topic_factory()
-    Topics.create_comment(topic_data, "some comment")
+    user = user_factory()
+    Topics.create_comment(topic_data, user.id, "some comment")
     topic = Topics.get_topic_with_comments_preload(topic_data.id)
 
     assert length(topic.comments) == 1
