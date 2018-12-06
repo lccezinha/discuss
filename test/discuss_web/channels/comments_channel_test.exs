@@ -50,8 +50,6 @@ defmodule DiscussWeb.CommentsChannelTest do
       user = user_factory()
       {:ok, _payload, socket} = subscribe_and_join(socket, "comments:#{topic.id}", %{})
 
-      assign(socket, :user_id, user.id)
-
       push(socket, "comments:add", %{"content" => "my content"})
 
       broadcast_event = "comments:#{topic.id}:new"

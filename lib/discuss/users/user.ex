@@ -4,7 +4,7 @@ defmodule Discuss.Users.User do
 
   alias Discuss.Topics.{Topic, Comment}
 
-  @derive {Poison.Encoder, only: [:name]}
+  @derive {Poison.Encoder, only: [:name, :email]}
 
   schema "users" do
     field(:email, :string)
